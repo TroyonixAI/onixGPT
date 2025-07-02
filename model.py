@@ -5,6 +5,12 @@ References:
 https://github.com/openai/gpt-2/blob/master/src/model.py
 2) huggingface/transformers PyTorch implementation:
 https://github.com/huggingface/transformers/blob/main/src/transformers/models/gpt2/modeling_gpt2.py
+
+# OnixGPT: Edit model size, token limits, and modularity here for Troyonix
+# - n_layer, n_head, n_embd: change in GPTConfig or config/*.py for different model sizes
+# - block_size: context window (max tokens per input)
+# - vocab_size: tokenizer vocabulary size (default: GPT-2 BPE)
+# - All classes are modular for easy API integration (see generate.py)
 """
 
 import math
@@ -107,16 +113,19 @@ class Block(nn.Module):
 
 @dataclass
 class GPTConfig:
-    block_size: int = 1024
+    block_size: int = 1024  # Max context window (tokens). Change for longer/shorter prompts.
     vocab_size: int = 50304 # GPT-2 vocab_size of 50257, padded up to nearest multiple of 64 for efficiency
-    n_layer: int = 12
-    n_head: int = 12
-    n_embd: int = 768
-    dropout: float = 0.0
-    bias: bool = True # True: bias in Linears and LayerNorms, like GPT-2. False: a bit better and faster
+    n_layer: int = 12       # Number of transformer layers. Lower for smaller models (e.g., 4 for MacBook Air)
+    n_head: int = 12        # Number of attention heads. Lower for smaller models (e.g., 4)
+    n_embd: int = 768       # Embedding size. Lower for smaller models (e.g., 128)
+    dropout: float = 0.0    # Dropout for regularization
+    bias: bool = True       # True: bias in Linears and LayerNorms, like GPT-2. False: a bit better and faster
 
 class GPT(nn.Module):
-
+    # Main GPT model. Modular for API/agent integration.
+    # To change model size, edit n_layer, n_head, n_embd in GPTConfig or config/*.py
+    # To change context window, edit block_size in GPTConfig or config/*.py
+    # To change vocabulary, edit vocab_size (default: GPT-2 BPE)
     def __init__(self, config):
         super().__init__()
         assert config.vocab_size is not None
@@ -168,6 +177,9 @@ class GPT(nn.Module):
             torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
     def forward(self, idx, targets=None):
+        # idx: input token indices, shape (batch, sequence_length)
+        # targets: optional, for training (next-token prediction)
+        # For inference, call model.generate() (see generate.py)
         device = idx.device
         b, t = idx.size()
         assert t <= self.config.block_size, f"Cannot forward sequence of length {t}, block size is only {self.config.block_size}"
@@ -304,11 +316,12 @@ class GPT(nn.Module):
 
     @torch.no_grad()
     def generate(self, idx, max_new_tokens, temperature=1.0, top_k=None):
-        """
-        Take a conditioning sequence of indices idx (LongTensor of shape (b,t)) and complete
-        the sequence max_new_tokens times, feeding the predictions back into the model each time.
-        Most likely you'll want to make sure to be in model.eval() mode of operation for this.
-        """
+        # Modular text generation for API/agent use (see generate.py)
+        # idx: input token indices, shape (1, context_length)
+        # max_new_tokens: number of tokens to generate
+        # temperature: sampling temperature
+        # top_k: top-k sampling
+        # Returns: tensor of token indices (1, context_length + max_new_tokens)
         for _ in range(max_new_tokens):
             # if the sequence context is growing too long we must crop it at block_size
             idx_cond = idx if idx.size(1) <= self.config.block_size else idx[:, -self.config.block_size:]
