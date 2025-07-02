@@ -51,4 +51,4 @@ OnixGPT is based on nanoGPT (MIT License). See LICENSE for details.
 ---
 **Troyonix: Smarter AI for Wealth Management.**
 <br>
-https://troyonix.com/
+[Troyonix](https://troyonix.com/)
