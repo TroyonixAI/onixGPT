@@ -1,6 +1,6 @@
 # OnixGPT: Modular Financial LLM for Troyonix
 
-OnixGPT is a lightweight, fine-tuneable GPT framework designed for financial text modeling and agent workflows in the Troyonix AI wealth management platform. Inspired by [nanoGPT](https://github.com/karpathy/nanoGPT), it is optimized for Apple Silicon (M1/M2) with torch-metal support, and is ready for local training and future FastAPI API serving.
+OnixGPT is a lightweight, fine-tunable GPT framework designed for financial text modeling and agent workflows within the Troyonix AI wealth management platform. Inspired by [nanoGPT](https://github.com/karpathy/nanoGPT), it is optimized for Apple Silicon (M1/M2) with torch-metal support, and is ready for local training as well as future FastAPI API serving.
 
 ## Features
 - **Minimal, modular codebase** for easy customization and integration
