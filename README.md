@@ -49,4 +49,4 @@ python generate.py --out_dir=out-onixgpt-finance --start="Market update: " --dev
 OnixGPT is based on nanoGPT (MIT License). See LICENSE for details.
 
 ---
-**[Troyonix](https://troyonix.com/): Smarter AI for Wealth Management.**
+**Troyonix: Smarter AI for Wealth Management.**
