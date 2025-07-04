@@ -1,4 +1,4 @@
-# evaluate the base gpt2
+# Evaluate the base gpt2-large model with OnixGPT
 # n_layer=36, n_head=20, n_embd=1280
 # 774M parameters
 batch_size = 8

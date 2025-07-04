@@ -1,6 +1,6 @@
-# evaluate the base gpt2
+# Evaluate the base gpt2-medium model with OnixGPT
 # n_layer=24, n_head=16, n_embd=1024
-# 350M parameters
+# 345M parameters
 batch_size = 8
 eval_iters = 500 # use more iterations to get good estimate
 eval_only = True

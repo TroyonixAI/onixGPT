@@ -1,6 +1,4 @@
-"""
-A much shorter version of train.py for benchmarking
-"""
+# Benchmarking script for OnixGPT
 import os
 from contextlib import nullcontext
 import numpy as np
